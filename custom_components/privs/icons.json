@@ -1,0 +1,30 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "in_session": { "default": "mdi:calendar-clock" }
+    },
+    "button": {
+      "gain": { "default": "mdi:plus-circle" },
+      "lose": { "default": "mdi:minus-circle" },
+      "bottom": { "default": "mdi:arrow-collapse-down" }
+    },
+    "sensor": {
+      "status": {
+        "default": "mdi:traffic-light",
+        "state": {
+          "green": "mdi:check-circle",
+          "yellow": "mdi:alert",
+          "red": "mdi:lock"
+        }
+      },
+      "level": { "default": "mdi:stairs" },
+      "hearts": { "default": "mdi:heart" },
+      "max_level": { "default": "mdi:stairs-up" },
+      "start_level": { "default": "mdi:flag" },
+      "next_change": { "default": "mdi:clock-outline" }
+    }
+  },
+  "services": {
+    "change_points": { "service": "mdi:plus-minus-variant" }
+  }
+}

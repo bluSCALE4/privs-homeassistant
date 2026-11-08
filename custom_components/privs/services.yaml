@@ -1,0 +1,20 @@
+change_points:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: privs
+          multiple: true
+    kind:
+      required: true
+      selector:
+        select:
+          translation_key: kind
+          options:
+            - gain
+            - lose
+            - bottom
+    note:
+      selector:
+        text:

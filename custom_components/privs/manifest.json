@@ -1,0 +1,12 @@
+{
+  "domain": "privs",
+  "name": "Privileges",
+  "codeowners": ["@bluSCALE4"],
+  "config_flow": true,
+  "documentation": "https://github.com/bluSCALE4/privs-homeassistant",
+  "integration_type": "service",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/bluSCALE4/privs-homeassistant/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

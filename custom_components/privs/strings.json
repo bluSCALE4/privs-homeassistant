@@ -1,0 +1,142 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Privs",
+        "description": "Name this Home Assistant as it should appear in the Privs app. Next you'll get a code to approve in the app.",
+        "data": {
+          "name": "Name"
+        },
+        "data_description": {
+          "name": "Shown in Privs under Settings > Home Assistant, so you can tell installs apart."
+        }
+      },
+      "expired": {
+        "title": "Code expired",
+        "description": "Codes last 10 minutes. Submit to get a new one."
+      },
+      "failed": {
+        "title": "Lost connection",
+        "description": "Home Assistant couldn't reach Privs while waiting for approval. Submit to try again with a new code."
+      },
+      "reauth_confirm": {
+        "title": "Pair again",
+        "description": "{name} is no longer connected to Privs. It was disconnected in the app, or its session was lost. Submit to get a new code to approve."
+      }
+    },
+    "progress": {
+      "wait_for_approval": "On your iPhone, open Privs, go to **Settings > Home Assistant**, enter this code and tap **Continue**:\n\n# {code}\n\nThen choose who Home Assistant can see and tap **Connect**. This page continues on its own. The code lasts 10 minutes."
+    },
+    "error": {
+      "cannot_connect": "Couldn't reach Privs. Check the connection and try again."
+    },
+    "abort": {
+      "already_configured": "This pairing is already set up.",
+      "reauth_successful": "Paired again."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "in_session": {
+        "name": "In session"
+      }
+    },
+    "button": {
+      "gain": {
+        "name": "Gain point"
+      },
+      "lose": {
+        "name": "Lose point"
+      },
+      "bottom": {
+        "name": "Straight to bottom"
+      }
+    },
+    "sensor": {
+      "status": {
+        "name": "Status",
+        "state": {
+          "green": "Green",
+          "yellow": "Yellow",
+          "red": "Red"
+        }
+      },
+      "level": {
+        "name": "Level"
+      },
+      "hearts": {
+        "name": "Hearts"
+      },
+      "max_level": {
+        "name": "Top level"
+      },
+      "start_level": {
+        "name": "Start level"
+      },
+      "next_change": {
+        "name": "Next session change"
+      }
+    }
+  },
+  "exceptions": {
+    "disconnected": {
+      "message": "This install was disconnected in the Privs app."
+    },
+    "session_expired": {
+      "message": "The connection to Privs was lost. Pair again."
+    },
+    "update_failed": {
+      "message": "Couldn't update from Privs: {error}"
+    },
+    "locked": {
+      "message": "Locked for today after three strikes."
+    },
+    "not_delegated": {
+      "message": "This person is no longer shared with Home Assistant."
+    },
+    "read_only": {
+      "message": "This install can view but not change points. To allow changes, disconnect it in Privs under Settings > Home Assistant and pair again with View and Change Points."
+    },
+    "outside_session": {
+      "message": "Points can't be changed outside the session times."
+    },
+    "rate_limited": {
+      "message": "Too many changes in the last minute. Try again shortly."
+    },
+    "point_failed": {
+      "message": "Couldn't change points: {error}"
+    },
+    "not_a_person": {
+      "message": "Device {device_id} isn't a Privs person."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "gain": "Gain point",
+        "lose": "Lose point",
+        "bottom": "Straight to bottom"
+      }
+    }
+  },
+  "services": {
+    "change_points": {
+      "name": "Change points",
+      "description": "Gains or loses a point, or sends someone straight to the bottom, with an optional note for their history.",
+      "fields": {
+        "device_id": {
+          "name": "People",
+          "description": "The people to change."
+        },
+        "kind": {
+          "name": "Change",
+          "description": "What to do."
+        },
+        "note": {
+          "name": "Note",
+          "description": "Shown in the person's history in Privs."
+        }
+      }
+    }
+  }
+}
