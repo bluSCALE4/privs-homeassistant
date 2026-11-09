@@ -9,6 +9,7 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryAuthFailed, HomeAssistantError
+from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.debounce import Debouncer
 from homeassistant.helpers.event import async_track_point_in_utc_time
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -82,7 +83,24 @@ class PrivsCoordinator(DataUpdateCoordinator[PrivsData]):
             self.hass.config_entries.async_schedule_reload(self.config_entry.entry_id)
 
         self._schedule_boundary(people)
+        self._remove_stale_devices({person.id for person in people})
         return PrivsData(delegation=delegation, people={person.id: person for person in people})
+
+    @callback
+    def _remove_stale_devices(self, current: set[str]) -> None:
+        """Remove the devices of people this pairing no longer includes.
+
+        People leave a pairing when the app takes them out of it, when
+        they're deleted, or when the account that paired lost access to them.
+        Someone outside their session times is still included.
+        """
+        registry = dr.async_get(self.hass)
+        entry_id = self.config_entry.entry_id
+        for device in dr.async_entries_for_config_entry(registry, entry_id):
+            if not any(
+                domain == DOMAIN and value in current for domain, value in device.identifiers
+            ):
+                registry.async_remove_device(device.id)
 
     async def async_change_points(self, person_id: str, kind: str, note: str | None = None) -> None:
         """Apply a point event, turning the backend's refusals into readable errors."""

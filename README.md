@@ -31,6 +31,8 @@ Each person becomes a device with:
 
 For people shared with you, Home Assistant only sees what you can see: their state is unavailable outside your session times, and points can change only when you could change them yourself.
 
+When someone is no longer part of the pairing (you took them out of it in Privs, they were deleted, or the person who shared them with you removed your access), their device and entities are removed automatically.
+
 ### Changing points with a note
 
 The `privs.change_points` action gains or loses a point, or sends someone straight to the bottom, with an optional note that shows in their history in Privs:

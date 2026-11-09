@@ -202,21 +202,29 @@ async def test_new_person_gets_entities(
     assert hass.states.get("sensor.cy_status").state == "green"
 
 
-async def test_removed_person_device_can_be_deleted(
+async def test_removed_person_leaves_no_device(
     hass: HomeAssistant, client: AsyncMock, loaded: MockConfigEntry, freezer: FrozenDateTimeFactory
 ) -> None:
-    """A person no longer delegated goes unavailable and can be removed."""
+    """Someone taken out of the pairing loses their device and entities."""
+    everyone = client.people.return_value
     client.people.return_value = [make_person()]
     freezer.tick(POLL_INTERVAL)
     async_fire_time_changed(hass)
     await hass.async_block_till_done()
-    assert hass.states.get("sensor.ben_next_session_change").state == STATE_UNAVAILABLE
 
     registry = dr.async_get(hass)
-    ben = registry.async_get_device_by_identifier((DOMAIN, BEN_ID), loaded.entry_id)
+    assert registry.async_get_device_by_identifier((DOMAIN, BEN_ID), loaded.entry_id) is None
+    assert hass.states.get("sensor.ben_status") is None
     ava = registry.async_get_device_by_identifier((DOMAIN, AVA_ID), loaded.entry_id)
-    assert await async_remove_config_entry_device(hass, loaded, ben)
     assert not await async_remove_config_entry_device(hass, loaded, ava)
+
+    # Shared again later: they come back with fresh entities.
+    client.people.return_value = everyone
+    freezer.tick(POLL_INTERVAL)
+    async_fire_time_changed(hass)
+    await hass.async_block_till_done()
+    assert registry.async_get_device_by_identifier((DOMAIN, BEN_ID), loaded.entry_id) is not None
+    assert hass.states.get("sensor.ben_status") is not None
 
 
 async def test_scope_change_reloads(

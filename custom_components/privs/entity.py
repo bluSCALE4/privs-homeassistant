@@ -57,6 +57,8 @@ def async_add_people(
 
     @callback
     def add_new() -> None:
+        # Someone removed and later added back gets fresh entities.
+        known.intersection_update(coordinator.data.people)
         new = [p for pid, p in coordinator.data.people.items() if pid not in known]
         if not new:
             return
